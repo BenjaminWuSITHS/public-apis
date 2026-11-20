@@ -1,26 +1,20 @@
 import os
-import requests
+import discord
 from dotenv import load_dotenv
 
 load_dotenv()
-
 token = os.environ.get("TOKEN")
+
 if not token:
-    print("Warning: TOKEN environment variable is missing or empty!")
+    raise ValueError("No TOKEN found in environment variables.")
 
-url = "https://discord.com"
-headers = {"Authorization": f"Bot {token}"}
 
-r = requests.get(url, headers=headers)
+intents = discord.Intents.default()
+client = discord.Client(intents=intents)
 
-print("Status Code:", r.status_code)
-print("Raw Response:", repr(r.text))
+@client.event
+async def on_ready():
+    print(f"Logged in successfully as: {client.user} (ID: {client.user.id})")
+    await client.close()
 
-if r.status_code == 200 and r.text.strip():
-    try:
-        data = r.json()
-        print("Bot User Data:", data)
-    except requests.exceptions.JSONDecodeError:
-        print("Response was not valid JSON.")
-else:
-    print("Request failed or returned an empty body.")
+client.run(token)
