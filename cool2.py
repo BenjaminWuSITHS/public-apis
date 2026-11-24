@@ -5,9 +5,10 @@ import requests
 url = "https://jtoh.fandom.com/api.php"
 headers = {"User-Agent": "MyJToHBot/1.0"}
 
+john = input("search for what?")
 params = {
     "action": "parse",
-    "page": "Tower of Annoyingly Simple Trials (Classic)",
+    "page": john,
     "prop": "text", 
     "format": "json",
 }
